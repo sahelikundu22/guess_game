@@ -108,6 +108,7 @@ h1, h2, h3, h4, h5, h6, p, span, label {
     background-color: var(--secondary-bg) !important;
     color: #000000 !important; /* Black text for entire table */
     border-radius: 8px;
+    width: 100% !important;
 }
 
 /* Header - Black text */
@@ -115,12 +116,16 @@ h1, h2, h3, h4, h5, h6, p, span, label {
     background-color: rgba(255,255,255,0.08) !important;
     color: #000000 !important; /* Black text for header */
     font-weight: bold !important;
+    padding: 8px 4px !important;
+    text-align: center !important;
 }
 
 /* Cells - Black text */
 .stDataFrame tbody tr td {
     background-color: transparent !important;
     color: #000000 !important; /* Black text for cells */
+    padding: 8px 4px !important;
+    text-align: center !important;
 }
 
 /* Row hover - Keep black text */
@@ -132,14 +137,20 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 /* Individual cell styling for black text */
 .dataframe {
     color: #000000 !important;
+    width: 100% !important;
+    table-layout: fixed !important;
 }
 
 .dataframe th {
     color: #000000 !important;
+    padding: 8px 4px !important;
+    text-align: center !important;
 }
 
 .dataframe td {
     color: #000000 !important;
+    padding: 8px 4px !important;
+    text-align: center !important;
 }
 
 /* Special styling for highlighted rows with black text */
@@ -150,14 +161,18 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 /* Force all table text to be black */
 table {
     color: #000000 !important;
+    table-layout: fixed !important;
+    width: 100% !important;
 }
 
 table th {
     color: #000000 !important;
+    padding: 8px 4px !important;
 }
 
 table td {
     color: #000000 !important;
+    padding: 8px 4px !important;
 }
 
 /* All table-related elements with black text */
@@ -177,14 +192,16 @@ div[data-testid="StyledDataFrame"] {
 
 div[data-testid="StyledDataFrame"] th {
     color: #000000 !important;
+    padding: 8px 4px !important;
 }
 
 div[data-testid="StyledDataFrame"] td {
     color: #000000 !important;
+    padding: 8px 4px !important;
 }
 
 /* ================================
-   MOBILE ADJUSTMENTS
+   MOBILE ADJUSTMENTS - SMALLER COLUMNS
    ================================ */
 
 @media (max-width: 768px) {
@@ -202,6 +219,93 @@ div[data-testid="StyledDataFrame"] td {
     .stDataFrame,
     .stDataFrame * {
         color: #000000 !important;
+    }
+    
+    /* Make table more compact on mobile */
+    .stDataFrame {
+        font-size: 0.85rem !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+    
+    /* Smaller column widths for mobile */
+    .stDataFrame th:nth-child(1), .stDataFrame td:nth-child(1) {
+        width: 20% !important;  /* Turn column */
+        min-width: 50px !important;
+        max-width: 60px !important;
+    }
+    
+    .stDataFrame th:nth-child(2), .stDataFrame td:nth-child(2) {
+        width: 30% !important;  /* Guess column - SMALLER */
+        min-width: 70px !important;
+        max-width: 90px !important;
+        font-size: 0.9rem !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    .stDataFrame th:nth-child(3), .stDataFrame td:nth-child(3) {
+        width: 25% !important;  /* Count column */
+        min-width: 60px !important;
+        max-width: 80px !important;
+    }
+    
+    .stDataFrame th:nth-child(4), .stDataFrame td:nth-child(4) {
+        width: 25% !important;  /* Position column */
+        min-width: 60px !important;
+        max-width: 80px !important;
+    }
+    
+    /* Even more compact for very small screens */
+    @media (max-width: 480px) {
+        .stDataFrame {
+            font-size: 0.8rem !important;
+        }
+        
+        .stDataFrame th:nth-child(1), .stDataFrame td:nth-child(1) {
+            width: 15% !important;
+            min-width: 40px !important;
+        }
+        
+        .stDataFrame th:nth-child(2), .stDataFrame td:nth-child(2) {
+            width: 35% !important;  /* Guess column - SMALLER */
+            min-width: 60px !important;
+            max-width: 80px !important;
+            font-size: 0.85rem !important;
+            padding: 6px 2px !important;
+        }
+        
+        .stDataFrame th:nth-child(3), .stDataFrame td:nth-child(3) {
+            width: 25% !important;
+            min-width: 50px !important;
+        }
+        
+        .stDataFrame th:nth-child(4), .stDataFrame td:nth-child(4) {
+            width: 25% !important;
+            min-width: 50px !important;
+        }
+    }
+}
+
+/* ================================
+   DESKTOP TABLE COLUMN WIDTHS
+   ================================ */
+
+@media (min-width: 769px) {
+    /* Desktop column widths */
+    .stDataFrame th:nth-child(1), .stDataFrame td:nth-child(1) {
+        width: 15% !important;  /* Turn column */
+    }
+    
+    .stDataFrame th:nth-child(2), .stDataFrame td:nth-child(2) {
+        width: 40% !important;  /* Guess column - balanced */
+    }
+    
+    .stDataFrame th:nth-child(3), .stDataFrame td:nth-child(3) {
+        width: 22.5% !important;  /* Count column */
+    }
+    
+    .stDataFrame th:nth-child(4), .stDataFrame td:nth-child(4) {
+        width: 22.5% !important;  /* Position column */
     }
 }
 
@@ -249,6 +353,30 @@ div[data-testid="InputInstructions"] {
 /* Remove any leftover space where the message was */
 form div:has(> div[data-testid="InputInstructions"]) {
     display: none !important;
+}
+
+/* ================================
+   COMPACT TABLE CELLS
+   ================================ */
+
+/* Make all table cells more compact */
+[data-testid="StyledDataFrame"] {
+    padding: 2px !important;
+}
+
+[data-testid="StyledDataFrame"] th,
+[data-testid="StyledDataFrame"] td {
+    padding: 6px 4px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Guess column specific styling for compact display */
+[data-testid="StyledDataFrame"] td:nth-child(2) {
+    font-family: 'Courier New', monospace !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
 }
 
 </style>
