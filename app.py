@@ -101,30 +101,86 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 }
 
 /* ================================
-   DATAFRAME (MOST IMPORTANT FIX)
+   DATAFRAME (HISTORY TABLE) - BLACK TEXT EVERYWHERE
    ================================ */
 
 .stDataFrame {
     background-color: var(--secondary-bg) !important;
-    color: var(--text-color) !important;
+    color: #000000 !important; /* Black text for entire table */
     border-radius: 8px;
 }
 
-/* Header */
+/* Header - Black text */
 .stDataFrame thead tr th {
     background-color: rgba(255,255,255,0.08) !important;
-    color: var(--text-color) !important;
+    color: #000000 !important; /* Black text for header */
+    font-weight: bold !important;
 }
 
-/* Cells */
+/* Cells - Black text */
 .stDataFrame tbody tr td {
     background-color: transparent !important;
-    color: var(--text-color) !important;
+    color: #000000 !important; /* Black text for cells */
 }
 
-/* Row hover */
+/* Row hover - Keep black text */
 .stDataFrame tbody tr:hover td {
     background-color: rgba(255,255,255,0.05) !important;
+    color: #000000 !important; /* Black text on hover */
+}
+
+/* Individual cell styling for black text */
+.dataframe {
+    color: #000000 !important;
+}
+
+.dataframe th {
+    color: #000000 !important;
+}
+
+.dataframe td {
+    color: #000000 !important;
+}
+
+/* Special styling for highlighted rows with black text */
+[data-testid="StyledDataFrame"] {
+    color: #000000 !important;
+}
+
+/* Force all table text to be black */
+table {
+    color: #000000 !important;
+}
+
+table th {
+    color: #000000 !important;
+}
+
+table td {
+    color: #000000 !important;
+}
+
+/* All table-related elements with black text */
+.stDataFrame,
+.stDataFrame *,
+.dataframe,
+.dataframe *,
+table,
+table * {
+    color: #000000 !important;
+}
+
+/* Specific override for Streamlit's dataframe container */
+div[data-testid="StyledDataFrame"] {
+    color: #000000 !important;
+}
+
+div[data-testid="StyledDataFrame"] th {
+    color: #000000 !important;
+}
+
+div[data-testid="StyledDataFrame"] td {
+    color: #000000 !important;
 }
 
 /* ================================
@@ -141,6 +197,12 @@ h1, h2, h3, h4, h5, h6, p, span, label {
         font-size: 1.7rem !important;
         text-align: center;
     }
+    
+    /* Ensure black text on mobile too */
+    .stDataFrame,
+    .stDataFrame * {
+        color: #000000 !important;
+    }
 }
 
 /* ================================
@@ -149,6 +211,19 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 
 div[data-baseweb="input"] > div {
     background-color: transparent !important;
+}
+
+/* Additional table styling for better visibility with black text */
+.stDataFrame {
+    border: 1px solid rgba(0,0,0,0.1) !important;
+}
+
+.stDataFrame thead tr th {
+    border-bottom: 2px solid rgba(0,0,0,0.2) !important;
+}
+
+.stDataFrame tbody tr td {
+    border-bottom: 1px solid rgba(0,0,0,0.1) !important;
 }
 
 </style>
@@ -184,7 +259,6 @@ with st.expander("ℹ️ How to Play", expanded=False):
     - **Count**: How many digits are correct (any position)
     - **Position**: How many digits are in the correct position
     - **Input**: Enter all {n} digits as one number (e.g., 1234)
-    - **Enter key**: Press Enter to submit
     - **Mobile**: Uses number keyboard for easy input
     """)
 
@@ -389,11 +463,11 @@ if st.session_state.history:
     def highlight_rows(row):
         """Apply background color based on conditions"""
         if row['Position'] == f"🎯 {n}":
-            return ['background-color: #d4edda'] * len(row)
+            return ['background-color: #d4edda; color: #000000'] * len(row)  # Green bg, black text
         elif int(row['Turn']) == st.session_state.turn and not st.session_state.game_over:
-            return ['background-color: #fff3cd'] * len(row)
+            return ['background-color: #fff3cd; color: #000000'] * len(row)  # Yellow bg, black text
         else:
-            return [''] * len(row)
+            return ['background-color: transparent; color: #000000'] * len(row)  # Transparent bg, black text
     
     # Apply the styling function
     styled_df = df_display.style.apply(highlight_rows, axis=1)
