@@ -9,201 +9,153 @@ st.set_page_config(
     layout="wide"
 )
 
-# Add custom CSS for dark mode and mobile compatibility
 st.markdown("""
 <style>
-    /* Base responsive settings */
-    .mobile-container {
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-    
-    /* Dark mode text color fixes */
-    @media (prefers-color-scheme: dark) {
-        .stDataFrame {
-            color: #ffffff !important;
-        }
-        .stDataFrame th {
-            color: #ffffff !important;
-        }
-        .stDataFrame td {
-            color: #ffffff !important;
-        }
-    }
-    
-    /* Dark mode form improvements */
+/* ================================
+   STREAMLIT DARK MODE FIX (DESKTOP + MOBILE)
+   ================================ */
+
+/* Use Streamlit theme variables */
+:root {
+    --bg-color: var(--background-color);
+    --text-color: var(--text-color);
+    --secondary-bg: var(--secondary-background-color);
+    --border-color: rgba(255,255,255,0.15);
+}
+
+/* App background */
+.stApp {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Titles & text */
+h1, h2, h3, h4, h5, h6, p, span, label {
+    color: var(--text-color) !important;
+}
+
+/* ================================
+   INPUT BOXES (OTP / TEXT INPUT)
+   ================================ */
+
+.stTextInput input {
+    background-color: var(--secondary-bg) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    font-size: 1.4rem !important;
+    text-align: center !important;
+}
+
+/* Placeholder */
+.stTextInput input::placeholder {
+    color: rgba(200,200,200,0.6) !important;
+}
+
+/* Focus */
+.stTextInput input:focus {
+    border-color: #4da3ff !important;
+    box-shadow: 0 0 0 1px #4da3ff !important;
+}
+
+/* ================================
+   BUTTONS
+   ================================ */
+
+.stButton button {
+    background-color: #4da3ff !important;
+    color: #000 !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-weight: 600;
+}
+
+.stButton button:hover {
+    background-color: #3391ff !important;
+    color: #000 !important;
+}
+
+/* ================================
+   RESULT BOX
+   ================================ */
+
+.result-box {
+    background-color: var(--secondary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+/* ================================
+   METRICS
+   ================================ */
+
+[data-testid="stMetricValue"] {
+    color: var(--text-color) !important;
+    font-size: 1.3rem !important;
+}
+
+[data-testid="stMetricLabel"] {
+    color: rgba(200,200,200,0.8) !important;
+}
+
+/* ================================
+   DATAFRAME (MOST IMPORTANT FIX)
+   ================================ */
+
+.stDataFrame {
+    background-color: var(--secondary-bg) !important;
+    color: var(--text-color) !important;
+    border-radius: 8px;
+}
+
+/* Header */
+.stDataFrame thead tr th {
+    background-color: rgba(255,255,255,0.08) !important;
+    color: var(--text-color) !important;
+}
+
+/* Cells */
+.stDataFrame tbody tr td {
+    background-color: transparent !important;
+    color: var(--text-color) !important;
+}
+
+/* Row hover */
+.stDataFrame tbody tr:hover td {
+    background-color: rgba(255,255,255,0.05) !important;
+}
+
+/* ================================
+   MOBILE ADJUSTMENTS
+   ================================ */
+
+@media (max-width: 768px) {
     .stTextInput input {
-        background-color: transparent;
+        font-size: 1.1rem !important;
+        height: 3rem !important;
     }
-    
-    /* Dark mode result box */
-    .result-box {
-        background-color: #262730 !important;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-        border: 1px solid #555;
+
+    h1 {
+        font-size: 1.7rem !important;
+        text-align: center;
     }
-    
-    /* Ensure form text is visible in dark mode */
-    div[data-baseweb="input"] > div {
-        background-color: transparent !important;
-    }
-    
-    /* Better contrast for table cells */
-    .dataframe {
-        background-color: transparent !important;
-    }
-    
-    /* Status metrics styling for mobile */
-    [data-testid="stMetricValue"] {
-        font-size: 1.2rem !important;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        font-size: 0.8rem !important;
-    }
-    
-    /* Make placeholder text visible */
-    input::placeholder {
-        color: #888 !important;
-        opacity: 1 !important;
-    }
-    
-    /* Mobile-specific adjustments */
-    @media (max-width: 768px) {
-        /* Title and header adjustments */
-        h1 {
-            font-size: 1.8rem !important;
-            text-align: center !important;
-        }
-        
-        h3 {
-            font-size: 1.3rem !important;
-        }
-        
-        /* Metrics adjustments */
-        .stMetric {
-            padding: 0.3rem !important;
-        }
-        
-        [data-testid="stMetricValue"] {
-            font-size: 1.1rem !important;
-        }
-        
-        [data-testid="stMetricLabel"] {
-            font-size: 0.7rem !important;
-        }
-        
-        /* Form input adjustments */
-        .stTextInput input {
-            height: 2.5rem !important;
-            font-size: 1.1rem !important;
-            text-align: center !important;
-        }
-        
-        /* Button adjustments */
-        .stButton button {
-            width: 100% !important;
-            padding: 0.6rem !important;
-            font-size: 0.9rem !important;
-        }
-        
-        /* Data table adjustments */
-        .dataframe {
-            font-size: 0.85rem !important;
-        }
-        
-        .dataframe th {
-            padding: 0.3rem !important;
-            font-size: 0.8rem !important;
-        }
-        
-        .dataframe td {
-            padding: 0.3rem !important;
-        }
-        
-        /* Secret code display */
-        code {
-            font-size: 0.9rem !important;
-            word-break: break-all;
-        }
-        
-        /* Result box adjustments */
-        .result-box h4 {
-            font-size: 1.1rem !important;
-        }
-        
-        .result-box p {
-            font-size: 0.9rem !important;
-            margin: 0.3rem 0 !important;
-        }
-    }
-    
-    /* Tablet adjustments */
-    @media (max-width: 1024px) and (min-width: 769px) {
-        .stTextInput input {
-            height: 3rem !important;
-            font-size: 1.2rem !important;
-        }
-        
-        [data-testid="stMetricValue"] {
-            font-size: 1.3rem !important;
-        }
-    }
-    
-    /* Extra small mobile adjustments */
-    @media (max-width: 480px) {
-        h1 {
-            font-size: 1.5rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .stTextInput input {
-            height: 2.2rem !important;
-            font-size: 1rem !important;
-        }
-        
-        .stButton button {
-            padding: 0.5rem !important;
-            font-size: 0.8rem !important;
-        }
-        
-        /* Adjust column spacing for guess inputs */
-        [data-testid="column"] {
-            padding: 0.1rem !important;
-        }
-    }
-    
-    /* Game history table responsive */
-    .history-table {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Form container responsive */
-    .form-container {
-        width: 100%;
-        margin: 1rem 0;
-    }
-    
-    /* Mobile-friendly grid for guess inputs */
-    .guess-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-    
-    @media (max-width: 480px) {
-        .guess-grid {
-            gap: 0.3rem;
-        }
-    }
+}
+
+/* ================================
+   REMOVE WHITE ARTIFACTS
+   ================================ */
+
+div[data-baseweb="input"] > div {
+    background-color: transparent !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
+
+
+
 
 # Main container for better mobile layout
 st.markdown('<div class="mobile-container">', unsafe_allow_html=True)
@@ -225,14 +177,15 @@ if "comp" not in st.session_state:
 
 # Game instructions
 with st.expander("ℹ️ How to Play", expanded=False):
-    st.write("""
-    - Guess the 4-digit secret number (0-9)
+    st.write(f"""
+    - Guess the {n}-digit secret number (0-9)
     - Digits can repeat
-    - You have 20 attempts
+    - You have {MAX_TURNS} attempts
     - **Count**: How many digits are correct (any position)
     - **Position**: How many digits are in the correct position
-    - **Auto-tab**: Automatically moves to next box
+    - **Input**: Enter all {n} digits as one number (e.g., 1234)
     - **Enter key**: Press Enter to submit
+    - **Mobile**: Uses number keyboard for easy input
     """)
 
 # Display the secret code for debugging
@@ -254,31 +207,46 @@ with col3:
 
 st.markdown("### Your Guess")
 
+# Helper function to convert 4-digit number to array
+def number_to_array(number, n=4):
+    """Convert a 4-digit number to an array of digits"""
+    if number == 0:
+        return [0] * n
+    
+    # Create array to store digits
+    digits = []
+    
+    # Extract digits using division
+    temp = number
+    for i in range(n-1, -1, -1):
+        divisor = 10 ** i
+        digit = temp // divisor
+        digits.append(digit)
+        temp = temp % divisor
+    
+    return digits
+
 # Use a form to handle input clearing properly - Mobile optimized
 with st.form(key=f"guess_form_{st.session_state.form_key}", clear_on_submit=True):
     st.markdown('<div class="form-container">', unsafe_allow_html=True)
     
-    # Mobile-friendly input layout using columns with responsive widths
-    cols = st.columns([1, 1, 1, 1, 1.5])
-    guess = []
+    # Single input for the entire 4-digit number
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        user_input = st.text_input(
+            label="Enter 4-digit number",
+            max_chars=4,
+            key=f"number_input_{st.session_state.form_key}",
+            placeholder="e.g., 1234",
+            help=f"Enter a {n}-digit number (0-9)",
+            label_visibility="collapsed"
+        )
     
-    for i in range(n):
-        with cols[i]:
-            val = st.text_input(
-                label=f"**{i+1}**",
-                max_chars=1,
-                key=f"digit_{st.session_state.form_key}_{i}",
-                label_visibility="collapsed",
-                placeholder="0-9",
-                help=f"Digit {i+1} (0-9)"
-            )
-            guess.append(val)
-    
-    with cols[-1]:
+    with col2:
         st.write("")  # Spacer
         # Mobile-friendly button with full width on small screens
         submit_clicked = st.form_submit_button(
-            "Submit Guess",
+            "Submit",
             type="primary",
             disabled=st.session_state.game_over,
             use_container_width=True
@@ -286,19 +254,49 @@ with st.form(key=f"guess_form_{st.session_state.form_key}", clear_on_submit=True
     
     st.markdown('</div>', unsafe_allow_html=True)
 
+# Add JavaScript for numeric keyboard
+st.markdown("""
+<script>
+// Function to force numeric keyboard on mobile
+function setupNumericInputs() {
+    const inputs = document.querySelectorAll('input[type="text"]');
+    inputs.forEach(input => {
+        // Set inputmode to numeric for mobile keyboards
+        input.setAttribute('inputmode', 'numeric');
+        input.setAttribute('pattern', '[0-9]*');
+    });
+}
+
+// Run on page load and after each Streamlit update
+document.addEventListener('DOMContentLoaded', setupNumericInputs);
+if (typeof Streamlit !== 'undefined') {
+    Streamlit.onMessage(function(event) {
+        setTimeout(setupNumericInputs, 100);
+    });
+}
+</script>
+""", unsafe_allow_html=True)
+
 # Process submission
 if submit_clicked and not st.session_state.game_over:
     st.session_state.just_submitted = True
     
     # Validation
-    if "" in guess:
-        st.error("⚠️ Please fill all 4 boxes.")
-    elif not all(g.isdigit() for g in guess):
+    if not user_input:
+        st.error("⚠️ Please enter a 4-digit number.")
+    elif not user_input.isdigit():
         st.error("❌ Only digits (0–9) are allowed.")
-    elif any(int(g) < 0 or int(g) > 9 for g in guess if g.isdigit()):
+    elif len(user_input) != n:
+        st.error(f"❌ Please enter exactly {n} digits.")
+    elif any(int(digit) < 0 or int(digit) > 9 for digit in user_input):
         st.error("❌ Digits must be between 0-9.")
     else:
-        guess = list(map(int, guess))
+        # Convert the string to integer
+        user_number = int(user_input)
+        
+        # Convert to array using our helper function
+        guess = number_to_array(user_number, n)
+        
         st.session_state.turn += 1
 
         # Calculate matches
@@ -338,7 +336,8 @@ if submit_clicked and not st.session_state.game_over:
         st.markdown(f"""
         <div class='result-box'>
         <h4 style='color: #ff4b4b;'>Turn {st.session_state.turn} Result</h4>
-        <p><strong style='color: #ffffff;'>Guess:</strong> <code style='background: #555; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem;'>{guess}</code></p>
+        <p><strong style='color: #ffffff;'>Your guess:</strong> <code style='background: #555; padding: 2px 6px; border-radius: 3px; font-size: 1rem;'>{user_input}</code></p>
+        <p><strong style='color: #ffffff;'>As array:</strong> <code style='background: #555; padding: 2px 6px; border-radius: 3px; font-size: 0.9rem;'>{guess}</code></p>
         <p><strong style='color: #ffffff;'>Correct digits:</strong> <span style='color: #4CAF50; font-weight: bold;'>{count}</span></p>
         <p><strong style='color: #ffffff;'>Correct positions:</strong> <span style='color: #2196F3; font-weight: bold;'>{pos}</span></p>
         </div>
@@ -365,37 +364,42 @@ if submit_clicked and not st.session_state.game_over:
 
 # Show last guess result if available
 if st.session_state.last_guess and not st.session_state.game_over:
-    st.info(f"Last guess: `{st.session_state.last_guess}`")
+    st.info(f"Last guess: `{st.session_state.last_guess}` (as number: {''.join(map(str, st.session_state.last_guess))})")
 
 # Display history table with mobile-friendly container
 if st.session_state.history:
     st.markdown("### 📊 Guess History")
-    st.markdown('<div class="history-table">', unsafe_allow_html=True)
+    st.markdown('<div class="history-table narrow-table">', unsafe_allow_html=True)
     
     # Convert history to DataFrame
     display_data = []
     for entry in st.session_state.history:
+        # Convert array to string representation
+        guess_str = ''.join(str(d) for d in entry["Guess"])
         display_data.append({
             "Turn": entry["Turn"],
-            "Guess": ' '.join(str(d) for d in entry["Guess"]),
+            "Guess": guess_str,
             "Count": f"✅ {entry['Count']}",
             "Position": f"🎯 {entry['Position']}"
         })
     
     df_display = pd.DataFrame(display_data)
     
-    # Apply styling
-    def color_rows(row):
+    # Create a function to apply styles to each row
+    def highlight_rows(row):
+        """Apply background color based on conditions"""
         if row['Position'] == f"🎯 {n}":
-            return ['background-color: #2e7d32'] * len(row)
+            return ['background-color: #d4edda'] * len(row)
         elif int(row['Turn']) == st.session_state.turn and not st.session_state.game_over:
-            return ['background-color: #5d4037'] * len(row)
+            return ['background-color: #fff3cd'] * len(row)
         else:
             return [''] * len(row)
     
-    # Display dataframe with responsive settings
+    # Apply the styling function
+    styled_df = df_display.style.apply(highlight_rows, axis=1)
+    
     st.dataframe(
-        df_display.style.apply(color_rows, axis=1),
+        styled_df,
         use_container_width=True,
         hide_index=True,
         column_config={
@@ -406,7 +410,7 @@ if st.session_state.history:
             ),
             "Guess": st.column_config.TextColumn(
                 "Guess",
-                help="Your guess (4 digits)",
+                help=f"Your guess ({n} digits)",
                 width="medium"
             ),
             "Count": st.column_config.TextColumn(
@@ -442,12 +446,14 @@ if st.session_state.game_over:
         st.error("### 💔 Game Over")
     
     # Secret code display with mobile-friendly styling
+    secret_str = ''.join(str(d) for d in st.session_state.comp)
     st.markdown(f"""
     <div style='background: #333; padding: 0.8rem; border-radius: 0.5rem; margin: 1rem 0; text-align: center;'>
     <p style='color: white; margin: 0; font-size: 0.9rem;'>The secret code was:</p>
     <h2 style='color: #FFD700; letter-spacing: 0.3rem; margin: 0.5rem 0; font-size: 1.5rem; word-break: break-all;'>
-    {' '.join(str(d) for d in st.session_state.comp)}
+    {secret_str}
     </h2>
+    <p style='color: #aaa; margin: 0; font-size: 0.8rem;'>As array: {st.session_state.comp}</p>
     </div>
     """, unsafe_allow_html=True)
     
