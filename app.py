@@ -226,11 +226,33 @@ div[data-baseweb="input"] > div {
     border-bottom: 1px solid rgba(0,0,0,0.1) !important;
 }
 
+/* ================================
+   REMOVE "PRESS ENTER TO SUBMIT" MESSAGE
+   ================================ */
+
+/* Hide the "Press Enter to submit" tooltip that appears on form inputs */
+div[data-testid="InputInstructions"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hide any form submission hints */
+.stFormSubmitButton {
+    margin-top: 0 !important;
+}
+
+/* Remove any leftover space where the message was */
+form div:has(> div[data-testid="InputInstructions"]) {
+    display: none !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
-
-
-
 
 # Main container for better mobile layout
 st.markdown('<div class="mobile-container">', unsafe_allow_html=True)
@@ -259,6 +281,7 @@ with st.expander("ℹ️ How to Play", expanded=False):
     - **Count**: How many digits are correct (any position)
     - **Position**: How many digits are in the correct position
     - **Input**: Enter all {n} digits as one number (e.g., 1234)
+    - **Submit**: Click the Submit button
     - **Mobile**: Uses number keyboard for easy input
     """)
 
@@ -338,6 +361,12 @@ function setupNumericInputs() {
         // Set inputmode to numeric for mobile keyboards
         input.setAttribute('inputmode', 'numeric');
         input.setAttribute('pattern', '[0-9]*');
+        
+        // Remove any "Press Enter" tooltips
+        const tooltip = input.closest('div')?.nextElementSibling;
+        if (tooltip && tooltip.textContent?.includes('Enter')) {
+            tooltip.style.display = 'none';
+        }
     });
 }
 
