@@ -101,107 +101,79 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 }
 
 /* ================================
-   DATAFRAME (HISTORY TABLE) - BLACK TEXT EVERYWHERE
+   DATAFRAME (HISTORY TABLE) - CONSISTENT STYLING
    ================================ */
 
 .stDataFrame {
     background-color: var(--secondary-bg) !important;
-    color: #000000 !important; /* Black text for entire table */
     border-radius: 8px;
-    width: 100% !important;
 }
 
-/* Header - Black text */
+/* Header */
 .stDataFrame thead tr th {
     background-color: rgba(255,255,255,0.08) !important;
-    color: #000000 !important; /* Black text for header */
+    color: #ffffff !important; /* White text for header */
     font-weight: bold !important;
-    padding: 8px 4px !important;
-    text-align: center !important;
+    border-bottom: 2px solid rgba(255,255,255,0.2) !important;
 }
 
-/* Cells - Black text */
+/* Cells - All rows same color */
 .stDataFrame tbody tr td {
     background-color: transparent !important;
-    color: #000000 !important; /* Black text for cells */
-    padding: 8px 4px !important;
-    text-align: center !important;
+    color: #ffffff !important; /* White text for cells */
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
 }
 
-/* Row hover - Keep black text */
+/* Row hover - subtle effect */
 .stDataFrame tbody tr:hover td {
     background-color: rgba(255,255,255,0.05) !important;
-    color: #000000 !important; /* Black text on hover */
 }
 
-/* Individual cell styling for black text */
+/* Remove any previous highlighting styles */
 .dataframe {
-    color: #000000 !important;
-    width: 100% !important;
-    table-layout: fixed !important;
+    color: #ffffff !important;
 }
 
 .dataframe th {
-    color: #000000 !important;
-    padding: 8px 4px !important;
-    text-align: center !important;
+    color: #ffffff !important;
 }
 
 .dataframe td {
-    color: #000000 !important;
-    padding: 8px 4px !important;
-    text-align: center !important;
+    color: #ffffff !important;
 }
 
-/* Special styling for highlighted rows with black text */
-[data-testid="StyledDataFrame"] {
-    color: #000000 !important;
-}
-
-/* Force all table text to be black */
-table {
-    color: #000000 !important;
-    table-layout: fixed !important;
-    width: 100% !important;
-}
-
-table th {
-    color: #000000 !important;
-    padding: 8px 4px !important;
-}
-
-table td {
-    color: #000000 !important;
-    padding: 8px 4px !important;
-}
-
-/* All table-related elements with black text */
+/* All table-related elements with consistent styling */
 .stDataFrame,
 .stDataFrame *,
 .dataframe,
 .dataframe *,
 table,
 table * {
-    color: #000000 !important;
+    color: #ffffff !important;
 }
 
-/* Specific override for Streamlit's dataframe container */
+/* Remove any special styling for highlighted rows */
 div[data-testid="StyledDataFrame"] {
-    color: #000000 !important;
+    color: #ffffff !important;
 }
 
 div[data-testid="StyledDataFrame"] th {
-    color: #000000 !important;
-    padding: 8px 4px !important;
+    color: #ffffff !important;
 }
 
 div[data-testid="StyledDataFrame"] td {
-    color: #000000 !important;
-    padding: 8px 4px !important;
+    color: #ffffff !important;
+    background-color: transparent !important;
+}
+
+/* Force consistent background for all cells */
+.stDataFrame tbody tr:nth-child(even) td,
+.stDataFrame tbody tr:nth-child(odd) td {
+    background-color: transparent !important;
 }
 
 /* ================================
-   MOBILE ADJUSTMENTS - SMALLER COLUMNS
+   MOBILE ADJUSTMENTS
    ================================ */
 
 @media (max-width: 768px) {
@@ -215,97 +187,10 @@ div[data-testid="StyledDataFrame"] td {
         text-align: center;
     }
     
-    /* Ensure black text on mobile too */
+    /* Consistent table text on mobile */
     .stDataFrame,
     .stDataFrame * {
-        color: #000000 !important;
-    }
-    
-    /* Make table more compact on mobile */
-    .stDataFrame {
-        font-size: 0.85rem !important;
-        width: 100% !important;
-        overflow-x: auto !important;
-    }
-    
-    /* Smaller column widths for mobile */
-    .stDataFrame th:nth-child(1), .stDataFrame td:nth-child(1) {
-        width: 20% !important;  /* Turn column */
-        min-width: 50px !important;
-        max-width: 60px !important;
-    }
-    
-    .stDataFrame th:nth-child(2), .stDataFrame td:nth-child(2) {
-        width: 30% !important;  /* Guess column - SMALLER */
-        min-width: 70px !important;
-        max-width: 90px !important;
-        font-size: 0.9rem !important;
-        letter-spacing: 0.5px !important;
-    }
-    
-    .stDataFrame th:nth-child(3), .stDataFrame td:nth-child(3) {
-        width: 25% !important;  /* Count column */
-        min-width: 60px !important;
-        max-width: 80px !important;
-    }
-    
-    .stDataFrame th:nth-child(4), .stDataFrame td:nth-child(4) {
-        width: 25% !important;  /* Position column */
-        min-width: 60px !important;
-        max-width: 80px !important;
-    }
-    
-    /* Even more compact for very small screens */
-    @media (max-width: 480px) {
-        .stDataFrame {
-            font-size: 0.8rem !important;
-        }
-        
-        .stDataFrame th:nth-child(1), .stDataFrame td:nth-child(1) {
-            width: 15% !important;
-            min-width: 40px !important;
-        }
-        
-        .stDataFrame th:nth-child(2), .stDataFrame td:nth-child(2) {
-            width: 35% !important;  /* Guess column - SMALLER */
-            min-width: 60px !important;
-            max-width: 80px !important;
-            font-size: 0.85rem !important;
-            padding: 6px 2px !important;
-        }
-        
-        .stDataFrame th:nth-child(3), .stDataFrame td:nth-child(3) {
-            width: 25% !important;
-            min-width: 50px !important;
-        }
-        
-        .stDataFrame th:nth-child(4), .stDataFrame td:nth-child(4) {
-            width: 25% !important;
-            min-width: 50px !important;
-        }
-    }
-}
-
-/* ================================
-   DESKTOP TABLE COLUMN WIDTHS
-   ================================ */
-
-@media (min-width: 769px) {
-    /* Desktop column widths */
-    .stDataFrame th:nth-child(1), .stDataFrame td:nth-child(1) {
-        width: 15% !important;  /* Turn column */
-    }
-    
-    .stDataFrame th:nth-child(2), .stDataFrame td:nth-child(2) {
-        width: 40% !important;  /* Guess column - balanced */
-    }
-    
-    .stDataFrame th:nth-child(3), .stDataFrame td:nth-child(3) {
-        width: 22.5% !important;  /* Count column */
-    }
-    
-    .stDataFrame th:nth-child(4), .stDataFrame td:nth-child(4) {
-        width: 22.5% !important;  /* Position column */
+        color: #ffffff !important;
     }
 }
 
@@ -317,66 +202,9 @@ div[data-baseweb="input"] > div {
     background-color: transparent !important;
 }
 
-/* Additional table styling for better visibility with black text */
+/* Table border styling */
 .stDataFrame {
-    border: 1px solid rgba(0,0,0,0.1) !important;
-}
-
-.stDataFrame thead tr th {
-    border-bottom: 2px solid rgba(0,0,0,0.2) !important;
-}
-
-.stDataFrame tbody tr td {
-    border-bottom: 1px solid rgba(0,0,0,0.1) !important;
-}
-
-/* ================================
-   REMOVE "PRESS ENTER TO SUBMIT" MESSAGE
-   ================================ */
-
-/* Hide the "Press Enter to submit" tooltip that appears on form inputs */
-div[data-testid="InputInstructions"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* Hide any form submission hints */
-.stFormSubmitButton {
-    margin-top: 0 !important;
-}
-
-/* Remove any leftover space where the message was */
-form div:has(> div[data-testid="InputInstructions"]) {
-    display: none !important;
-}
-
-/* ================================
-   COMPACT TABLE CELLS
-   ================================ */
-
-/* Make all table cells more compact */
-[data-testid="StyledDataFrame"] {
-    padding: 2px !important;
-}
-
-[data-testid="StyledDataFrame"] th,
-[data-testid="StyledDataFrame"] td {
-    padding: 6px 4px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-}
-
-/* Guess column specific styling for compact display */
-[data-testid="StyledDataFrame"] td:nth-child(2) {
-    font-family: 'Courier New', monospace !important;
-    font-weight: 600 !important;
-    letter-spacing: 1px !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
 }
 
 </style>
@@ -409,7 +237,6 @@ with st.expander("ℹ️ How to Play", expanded=False):
     - **Count**: How many digits are correct (any position)
     - **Position**: How many digits are in the correct position
     - **Input**: Enter all {n} digits as one number (e.g., 1234)
-    - **Submit**: Click the Submit button
     - **Mobile**: Uses number keyboard for easy input
     """)
 
@@ -489,12 +316,6 @@ function setupNumericInputs() {
         // Set inputmode to numeric for mobile keyboards
         input.setAttribute('inputmode', 'numeric');
         input.setAttribute('pattern', '[0-9]*');
-        
-        // Remove any "Press Enter" tooltips
-        const tooltip = input.closest('div')?.nextElementSibling;
-        if (tooltip && tooltip.textContent?.includes('Enter')) {
-            tooltip.style.display = 'none';
-        }
     });
 }
 
@@ -597,7 +418,7 @@ if submit_clicked and not st.session_state.game_over:
 if st.session_state.last_guess and not st.session_state.game_over:
     st.info(f"Last guess: `{st.session_state.last_guess}` (as number: {''.join(map(str, st.session_state.last_guess))})")
 
-# Display history table with mobile-friendly container
+# Display history table with consistent styling
 if st.session_state.history:
     st.markdown("### 📊 Guess History")
     st.markdown('<div class="history-table narrow-table">', unsafe_allow_html=True)
@@ -616,21 +437,10 @@ if st.session_state.history:
     
     df_display = pd.DataFrame(display_data)
     
-    # Create a function to apply styles to each row
-    def highlight_rows(row):
-        """Apply background color based on conditions"""
-        if row['Position'] == f"🎯 {n}":
-            return ['background-color: #d4edda; color: #000000'] * len(row)  # Green bg, black text
-        elif int(row['Turn']) == st.session_state.turn and not st.session_state.game_over:
-            return ['background-color: #fff3cd; color: #000000'] * len(row)  # Yellow bg, black text
-        else:
-            return ['background-color: transparent; color: #000000'] * len(row)  # Transparent bg, black text
-    
-    # Apply the styling function
-    styled_df = df_display.style.apply(highlight_rows, axis=1)
-    
+    # SIMPLIFIED: No highlighting function - all rows will have the same style
+    # Just display the dataframe without any special styling
     st.dataframe(
-        styled_df,
+        df_display,
         use_container_width=True,
         hide_index=True,
         column_config={
