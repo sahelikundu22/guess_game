@@ -59,6 +59,16 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 }
 
 /* ================================
+   HIDE "PRESS ENTER TO SUBMIT" TEXT
+   ================================ */
+
+div[data-testid="InputInstructions"],
+div[data-testid="caption"],
+.stTextInput > label + div[data-testid="caption"] {
+    display: none !important;
+}
+
+/* ================================
    BUTTONS
    ================================ */
 
@@ -107,6 +117,7 @@ h1, h2, h3, h4, h5, h6, p, span, label {
 .stDataFrame {
     background-color: var(--secondary-bg) !important;
     border-radius: 8px;
+    margin-bottom: 2rem !important;
 }
 
 /* Header */
@@ -192,6 +203,14 @@ div[data-testid="StyledDataFrame"] td {
     .stDataFrame * {
         color: #ffffff !important;
     }
+    
+    /* Input section styling for mobile */
+    .input-section {
+        margin-top: 1.5rem !important;
+        padding: 1rem !important;
+        background-color: rgba(255,255,255,0.05) !important;
+        border-radius: 10px !important;
+    }
 }
 
 /* ================================
@@ -207,8 +226,28 @@ div[data-baseweb="input"] > div {
     border: 1px solid rgba(255,255,255,0.1) !important;
 }
 
+/* Input section styling */
+.input-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Game status styling */
+.game-status {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
 </style>
 """, unsafe_allow_html=True)
+
+
 
 # Main container for better mobile layout
 st.markdown('<div class="mobile-container">', unsafe_allow_html=True)
@@ -228,36 +267,53 @@ if "comp" not in st.session_state:
     st.session_state.form_key = 0
     st.session_state.just_submitted = False
 
-# Game instructions
-with st.expander("ℹ️ How to Play", expanded=False):
-    st.write(f"""
-    - Guess the {n}-digit secret number (0-9)
-    - Digits can repeat
-    - You have {MAX_TURNS} attempts
-    - **Count**: How many digits are correct (any position)
-    - **Position**: How many digits are in the correct position
-    - **Input**: Enter all {n} digits as one number (e.g., 1234)
-    - **Mobile**: Uses number keyboard for easy input
-    """)
+# Display history table FIRST (if there is history)
+if st.session_state.history:
+    st.markdown("### 📊 Guess History")
+    
+    # Convert history to DataFrame
+    display_data = []
+    for entry in st.session_state.history:
+        # Convert array to string representation
+        guess_str = ''.join(str(d) for d in entry["Guess"])
+        display_data.append({
+            "Turn": entry["Turn"],
+            "Guess": guess_str,
+            "Count": f"✅ {entry['Count']}",
+            "Position": f"🎯 {entry['Position']}"
+        })
+    
+    df_display = pd.DataFrame(display_data)
+    
+    # Display the dataframe without any special styling
+    st.dataframe(
+        df_display,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "Turn": st.column_config.NumberColumn(
+                "Turn",
+                help="Turn number",
+                width="small"
+            ),
+            "Guess": st.column_config.TextColumn(
+                "Guess",
+                help=f"Your guess ({n} digits)",
+                width="medium"
+            ),
+            "Count": st.column_config.TextColumn(
+                "Count",
+                help="Correct digits (any position)",
+                width="small"
+            ),
+            "Position": st.column_config.TextColumn(
+                "Position",
+                help="Correct positions",
+                width="small"
+            )
+        }
+    )
 
-# Display the secret code for debugging
-if st.checkbox("👁️ Show secret code (for testing)"):
-    st.code(f"Secret: {st.session_state.comp}")
-
-# Current game status - Responsive columns
-st.markdown("---")
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric("Turns Used", f"{st.session_state.turn}/{MAX_TURNS}")
-with col2:
-    remaining = MAX_TURNS - st.session_state.turn
-    st.metric("Turns Remaining", remaining)
-with col3:
-    status = "Playing" if not st.session_state.game_over else "Game Over"
-    status_icon = "▶️" if not st.session_state.game_over else "⏹️"
-    st.metric("Status", f"{status_icon} {status}")
-
-st.markdown("### Your Guess")
 
 # Helper function to convert 4-digit number to array
 def number_to_array(number, n=4):
@@ -280,8 +336,6 @@ def number_to_array(number, n=4):
 
 # Use a form to handle input clearing properly - Mobile optimized
 with st.form(key=f"guess_form_{st.session_state.form_key}", clear_on_submit=True):
-    st.markdown('<div class="form-container">', unsafe_allow_html=True)
-    
     # Single input for the entire 4-digit number
     col1, col2 = st.columns([3, 1])
     with col1:
@@ -303,8 +357,6 @@ with st.form(key=f"guess_form_{st.session_state.form_key}", clear_on_submit=True
             disabled=st.session_state.game_over,
             use_container_width=True
         )
-    
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Add JavaScript for numeric keyboard
 st.markdown("""
@@ -414,64 +466,33 @@ if submit_clicked and not st.session_state.game_over:
         
         st.rerun()
 
-# Show last guess result if available
-if st.session_state.last_guess and not st.session_state.game_over:
-    st.info(f"Last guess: `{st.session_state.last_guess}` (as number: {''.join(map(str, st.session_state.last_guess))})")
 
-# Display history table with consistent styling
-if st.session_state.history:
-    st.markdown("### 📊 Guess History")
-    st.markdown('<div class="history-table narrow-table">', unsafe_allow_html=True)
-    
-    # Convert history to DataFrame
-    display_data = []
-    for entry in st.session_state.history:
-        # Convert array to string representation
-        guess_str = ''.join(str(d) for d in entry["Guess"])
-        display_data.append({
-            "Turn": entry["Turn"],
-            "Guess": guess_str,
-            "Count": f"✅ {entry['Count']}",
-            "Position": f"🎯 {entry['Position']}"
-        })
-    
-    df_display = pd.DataFrame(display_data)
-    
-    # SIMPLIFIED: No highlighting function - all rows will have the same style
-    # Just display the dataframe without any special styling
-    st.dataframe(
-        df_display,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Turn": st.column_config.NumberColumn(
-                "Turn",
-                help="Turn number",
-                width="small"
-            ),
-            "Guess": st.column_config.TextColumn(
-                "Guess",
-                help=f"Your guess ({n} digits)",
-                width="medium"
-            ),
-            "Count": st.column_config.TextColumn(
-                "Count",
-                help="Correct digits (any position)",
-                width="small"
-            ),
-            "Position": st.column_config.TextColumn(
-                "Position",
-                help="Correct positions",
-                width="small"
-            )
-        }
-    )
-    st.markdown('</div>', unsafe_allow_html=True)
+# Show last guess result if available (below input section)
+if st.session_state.last_guess and not st.session_state.game_over and st.session_state.turn > 0:
+    st.markdown("### Your Guess")
+    st.info(f"**Last guess:** `{st.session_state.last_guess}` (as number: {''.join(map(str, st.session_state.last_guess))})")
 
-# Restart button with mobile-friendly layout
+
+# Game instructions
+with st.expander("ℹ️ How to Play", expanded=False):
+    st.write(f"""
+    - Guess the {n}-digit secret number (0-9)
+    - Digits can repeat
+    - You have {MAX_TURNS} attempts
+    - **Count**: How many digits are correct (any position)
+    - **Position**: How many digits are in the correct position
+    - **Input**: Enter all {n} digits as one number (e.g., 1234)
+    - **Mobile**: Uses number keyboard for easy input
+    """)
+
+# Display the secret code for debugging
+if st.checkbox("👁️ Show secret code (for testing)"):
+    st.code(f"Secret: {st.session_state.comp}")
+
+
 st.markdown("---")
-col1, col2 = st.columns([1, 3])
-with col1:
+col1, col2, col3 = st.columns([3, 1, 3])
+with col2:
     if st.button("🔄 Restart Game", type="secondary", use_container_width=True):
         for key in list(st.session_state.keys()):
             del st.session_state[key]
