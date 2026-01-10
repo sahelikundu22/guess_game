@@ -517,7 +517,7 @@ with col_right:
             "Guess": st.column_config.TextColumn(
                 "Guess",
                 help=f"Your guess ({n} digits)",
-                width="medium"
+                width="small"
             ),
             "Count": st.column_config.TextColumn(
                 "Count",
