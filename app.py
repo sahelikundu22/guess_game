@@ -247,12 +247,10 @@ div[data-baseweb="input"] > div {
 </style>
 """, unsafe_allow_html=True)
 
-
-
 # Main container for better mobile layout
 st.markdown('<div class="mobile-container">', unsafe_allow_html=True)
 
-st.title("🎯 Mastermind Number Game")
+st.markdown("<h1 style='text-align: center;'>🎯 Mastermind Number Game</h1>", unsafe_allow_html=True)
 
 n = 4
 MAX_TURNS = 20
