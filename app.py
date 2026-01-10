@@ -551,6 +551,7 @@ if st.session_state.game_over:
         st.balloons()
         st.success("### 🏆 You Win!")
     else:
+        st.snow()
         st.error("### 💔 Game Over")
     
     # Secret code display with mobile-friendly styling
